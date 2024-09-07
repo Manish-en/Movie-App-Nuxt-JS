@@ -1,54 +1,51 @@
 <template>
-    <div class="page-container">
+  <div class="page-container">
+    <div class="header">
       <NuxtLink to="/">
         <button class="btn">Back</button>
       </NuxtLink>
-  
-      <div class="movie-detail">
-        <div class="about">
-          <div class="info">
-            <div class="imgblock">
-              <img :src="image" alt="Movie Poster" />
-            </div>
-            <div class="description">
-              <h1>{{ movie.original_title }}</h1>
-              <p>Status: {{ movie.status }}</p>
-              <p>Released: {{ movie.release_date }}</p>
-              <p>Budget: {{ movie.budget }}</p>
-              <p>Language: {{ movie.original_language }}</p>
-              <p>Popularity: {{ movie.popularity }}</p>
-              <p>Runtime: {{ movie.runtime }} min</p>
-              <p class="overview">{{ movie.overview }}</p>
-              <button class="download-btn" disabled>Download</button>
-            </div>
-          </div>
-          <!-- Placeholder for the MovieReview Component -->
-          <div class="review-placeholder">
-            <MovieReview :id="movie.id" />
-          </div>
+    </div>
+
+    <div class="movie-detail">
+      <div class="info">
+        <div class="imgblock">
+          <img :src="image" alt="Movie Poster" />
+        </div>
+        <div class="description">
+          <h1>{{ movie.original_title }}</h1>
+          <p>Status: {{ movie.status }}</p>
+          <p>Released: {{ movie.release_date }}</p>
+          <p>Budget: {{ movie.budget }}</p>
+          <p>Language: {{ movie.original_language }}</p>
+          <p>Popularity: {{ movie.popularity }}</p>
+          <p>Runtime: {{ movie.runtime }} min</p>
+          <p class="overview">{{ movie.overview }}</p>
+          <button class="download-btn" disabled>Download</button>
         </div>
       </div>
+      <!-- Placeholder for the MovieReview Component -->
+      <div class="review-placeholder">
+        <MovieReview :id="movie.id" />
+      </div>
     </div>
+  </div>
 </template>
-  
+
 <script setup>
 import store from 'store2'
 
 useHead({
-    title:'Movie Details'
+  title: 'Movie Details'
 })
 
-const { movie} = defineProps(['movie'])
+const { movie } = defineProps(['movie'])
 
-let image = `https://image.tmdb.org/t/p/w500//${ movie.backdrop_path}`;
-if(movie.backdrop_path == null){
-    image = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg';
+let image = `https://image.tmdb.org/t/p/w500//${movie.backdrop_path}`;
+if (movie.backdrop_path == null) {
+  image = 'https://st3.depositphotos.com/1322515/35964/v/600/depositphotos_359648638-stock-illustration-image-available-icon.jpg';
 }
 
-
-
-store.set('movieId',movie.id);
-
+store.set('movieId', movie.id);
 </script>
 
 <style scoped>
@@ -58,12 +55,19 @@ store.set('movieId',movie.id);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* Center content horizontally */
   padding: 1rem;
   box-sizing: border-box;
 }
 
 /* Back button styling */
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+}
+
 .btn {
   background-color: #e74c3c; /* Vibrant color for visibility */
   color: white;
@@ -71,7 +75,6 @@ store.set('movieId',movie.id);
   padding: 8px 12px;
   cursor: pointer;
   border-radius: 8px;
-  margin-bottom: 1rem;
   transition: background-color 0.3s, border-color 0.3s;
 }
 
@@ -85,32 +88,30 @@ store.set('movieId',movie.id);
   display: flex;
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  justify-content: space-between;
   flex-grow: 1;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap; /* Wrap items for responsiveness */
 }
 
 /* About section which includes movie info and image */
-.about {
+.info {
   display: flex;
-  flex-grow: 1;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: center; /* Center image and details vertically */
+  width: 60%;
   background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
   padding: 1rem;
+  box-sizing: border-box;
 }
 
 /* Flexbox for image and description */
-.info {
-  display: flex;
-  flex-direction: column;
-  width: 70%; /* Reserve 70% for the main movie details */
-  gap: 1.5rem;
-}
-
 .imgblock {
   width: 100%;
-  margin: 0 auto;
+  margin-bottom: 1rem;
   border-radius: 12px;
   overflow: hidden;
 }
@@ -128,12 +129,12 @@ img:hover {
 
 /* Movie description styling */
 .description {
+  width: 100%;
   background-color: #1c1c1c; /* Dark background for text contrast */
   padding: 1.5rem;
   border-radius: 12px;
   color: white;
   text-align: left;
-  flex-grow: 1;
 }
 
 h1 {
@@ -141,6 +142,7 @@ h1 {
   font-size: 2.5rem;
   color: #ecf0f1; /* Light color for the movie title */
   margin-bottom: 0.5rem;
+  text-align: center; /* Center the title */
 }
 
 p {
@@ -176,16 +178,19 @@ p {
 
 /* Placeholder for the MovieReview component */
 .review-placeholder {
-  width: 30%; /* Reserve 30% width for the movie review section */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 35%; /* Reserve 35% width for the movie review section */
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 /* Responsive design adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .movie-detail {
     flex-direction: column;
+    align-items: center;
   }
 
   .info,
@@ -197,7 +202,19 @@ p {
     margin-top: 1rem;
   }
 }
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  .overview {
+    font-size: 1rem;
+  }
+
+  .download-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
 </style>
-
-
-
