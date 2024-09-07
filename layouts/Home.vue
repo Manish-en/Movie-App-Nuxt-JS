@@ -1,17 +1,17 @@
 <template>
     <nav>
-            <NuxtLink to="/"></NuxtLink>
+        <NuxtLink to="/"></NuxtLink>
     </nav>
     <div>
         <header 
             class="heading" 
             :style="{'backgroundImage':'url('+image+')'}"
         >
-            <div style="position: absolute;">
+            <div class="overlay">
                 <div class="headclass">
                     <p>
                         <i class="material-symbols-outlined">movie</i>
-                        Movie
+                        Mystic Movie
                     </p>
                     <h1 v-if="id != null">
                         <NuxtLink :to="`/movies/${id}`" class="link" >
@@ -22,106 +22,134 @@
             </div>
         </header>
     </div>
-<!--    output page content-->
-    <div >
+    <!-- output page content -->
+    <div class="content">
         <slot/>
     </div>
 </template>
 
-
 <script setup>
+import { ref } from 'vue'
 import store from 'store2'
 
-let result = ref({});
-let image = ref('');
-let movieTitle = ref('');
+const result = ref({});
+const image = ref('');
+const movieTitle = ref('');
 
-let id = ref();
-id = store.get('movieId');
+const id = ref(store.get('movieId'));
 
-
-if(id !== null){
-
+if(id.value !== null){
     async function getSingleMovie(){
-        result = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=bb5c9a25161603cb7d1205e55e4cbe88&language=en-US`)
-        .then((response) => response.json())
+        const response = await fetch(`https://api.themoviedb.org/3/movie/${id.value}?api_key=bb5c9a25161603cb7d1205e55e4cbe88&language=en-US`)
+        const data = await response.json();
         
-        
-        result['poster_path'] = 'https://image.tmdb.org/t/p/w500/'+ result.poster_path;
-        result['backdrop_path'] = 'https://image.tmdb.org/t/p/w500/'+ result.backdrop_path;
+        result.value = data;
+        result.value['poster_path'] = 'https://image.tmdb.org/t/p/w500/'+ result.value.poster_path;
+        result.value['backdrop_path'] = 'https://image.tmdb.org/t/p/w500/'+ result.value.backdrop_path;
 
-        // console.log(`Poster path of single movie: ${result.poster_path}`);
-        image.value = result.backdrop_path;
-        movieTitle.value = result.original_title;
-        console.log('backdrop path',result.backdrop_path);
-        console.log(image.value);
+        image.value = result.value.backdrop_path;
+        movieTitle.value = result.value.original_title;
     }
     getSingleMovie();
 
     store.remove('movieId');
 }else{
-    image = 'https://images.unsplash.com/photo-1574267432306-5ddbe53bda16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1631&q=80'
+    image.value = 'https://images.unsplash.com/photo-1574267432306-5ddbe53bda16?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1631&q=80'
 }
-
-
 </script>
 
 <style scoped>
-
-#__nuxt {
-    background-color: black;
+nav {
+    padding: 1rem;
 }
-.heading{
-    width:100%;
-    height: 27vw;
-    background-position: 50%;
+
+.heading {
+    position: relative;
+    width: 100%;
+    height: 30vh; /* Adjust height as needed */
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-}
-.headingImg{
-    background-image: url("../assets/img/movieHero.jpg");
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.headclass{
-    margin-top: 15vw;
-    margin-left: 6vw;
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Optional: dark overlay for better text visibility */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
+.headclass {
+    text-align: center;
+}
+
 p {
     font-family: 'Sigmar', cursive;
-    color: white;
-    margin: 1px;
-    font-size: 3rem;
-    display: initial;
-    padding: 25px;
-    border-radius: 46%;
+    font-size: 2.5rem;
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
 }
-p:hover{
+
+p:hover {
     color: #ff4500;
 }
 
 h1 {
-    color: white;
     font-weight: bolder;
-    font-size:2.5rem;
-}
-
-div{
-    display: block;
+    font-size: 2rem;
+    margin: 1rem 0;
 }
 
 .material-symbols-outlined {
     font-size: 2.4rem;
-    font-variation-settings:
-    'FILL' 0,
-    'wght' 600,
-    'GRAD' 0,
-    'opsz' 48
 }
 
-.link:hover{
+.link {
+    color: white;
+    text-decoration: none;
+}
+
+.link:hover {
     text-decoration: underline;
     color: #ff4500;
-
 }
 
+.content {
+    padding: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .heading {
+        height: 40vh;
+    }
+    .headclass p {
+        font-size: 2rem;
+    }
+    .headclass h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .heading {
+        height: 50vh;
+    }
+    .headclass p {
+        font-size: 1.5rem;
+    }
+    .headclass h1 {
+        font-size: 1.2rem;
+    }
+}
 </style>

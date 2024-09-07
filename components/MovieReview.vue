@@ -1,38 +1,33 @@
 <template>
-    <div v-if="reviews.length != 0" class="container">
-        <div class="reviewContainer">
-            <div class="reviewBar">
-                <div class="pg2">Reviews</div>
-                <div style="padding-top:0vw; padding-left: 2vw;" >
-                        <i 
-                            class="material-icons navbtn" 
-                            style="padding:5px 0px" 
-                            @click="decrement" 
-                            :class="page == 1 ? 'disable' : ''"
-                        >keyboard_double_arrow_left</i>
-                        <span class="pg" style="font-size: 1.7em;"> {{ page }} </span>
-                        <i 
-                            class="material-icons navbtn" 
-                            style="padding:5px 0px" 
-                            @click="increment"
-                            :class="reviews.length <= 10 ? 'disable' : ''"
-                        >keyboard_double_arrow_right</i>
-                </div>
-            </div>
-            <div class="reviewsContainer">
-                <div v-for="review in reviews" class="reviewcard"> 
-                    <div class="Rname">Written by : {{ review.author }}</div>
-                    <div class="content">{{ review.content }}</div>
-                </div>
-            </div>
-            
-    
+    <div v-if="reviews.length != 0" class="review-container">
+      <div class="review-header">
+        <div class="review-title">Reviews</div>
+        <div class="review-navigation">
+          <i 
+            class="material-icons navbtn" 
+            @click="decrement" 
+            :class="page == 1 ? 'disable' : ''"
+          >keyboard_double_arrow_left</i>
+          <span class="page-number"> {{ page }} </span>
+          <i 
+            class="material-icons navbtn" 
+            @click="increment"
+            :class="reviews.length <= 10 ? 'disable' : ''"
+          >keyboard_double_arrow_right</i>
         </div>
+      </div>
+      <div class="reviews-list">
+        <div v-for="review in reviews" :key="review.id" class="review-card"> 
+          <div class="review-author">Written by: {{ review.author }}</div>
+          <div class="review-content">{{ review.content }}</div>
+        </div>
+      </div>
     </div>
-    <div v-else="reviews.length == 0" class="container">
-        <p class="pg2">No reviews</p>
+    <div v-else class="review-container">
+      <p class="no-reviews">No reviews</p>
     </div>
 </template>
+  
 
 <script setup>
     
@@ -65,83 +60,113 @@
 </script>
 
 <style scoped>
-.container{
-    display: block;
-    width:30%;
+/* Main container for the reviews, fitting within the reserved 30% width */
+.review-container {
+  width: 100%;
+  background-color: #1c1c1c; /* Matches the dark theme */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  color: #ecf0f1; /* Light text color for readability */
 }
 
-.reviewContainer{
-    height: 95%;
-}
-.reviewBar{
-    display: flex;
-    width:max-content;
-    margin : 0 auto;
-
-}
-.reviewcard{
-    max-height: 288px;
-    overflow: hidden;
-    margin: 0 auto;
-    padding: 1rem;
-    height: 30rem;
-    width: 20rem;
-    margin-top: 3rem;
-    text-align: center;
-    border-radius: 5%;
-    background-color: #1c1919;
+/* Header section with title and navigation */
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.Rname{
-    font-weight: bold;
-    color: #ff4500;
-    font-size: 1.5rem;
+.review-title {
+  font-family: 'Sigmar', cursive;
+  font-size: 1.8rem;
+  color: #ff4500; /* Highlighted color for the title */
 }
 
-.content{
-    margin: 0.5rem auto;
-    width: 80%; 
-    height: 80%;
-    overflow:auto;
-    text-overflow: ellipsis; 
-    color: aliceblue;
-    font-size: 1.1rem;
+.review-navigation {
+  display: flex;
+  align-items: center;
 }
 
-.content::-webkit-scrollbar{
-    display: none;
+.navbtn {
+  color: #ecf0f1;
+  margin: 0 0.5rem;
+  transition: color 0.3s, transform 0.3s;
 }
 
-.pg2{
-    color: #ff4500;
-    font-family: 'Sigmar', cursive;
-    font-size: 2em;
+.navbtn:hover {
+  color: #1abc9c; /* Aqua color on hover for a fresh look */
+  cursor: pointer;
+  transform: scale(1.2);
 }
 
-.navbtn{
-    color: aliceblue;
-}
-.navbtn:hover{
-    color: aqua;
-    cursor: pointer;
-    transform: scale(1.5);
-}
-.disable{
-    pointer-events: none;
-    opacity: 0.3;
-}
-.pg{
-    color: white;
-    font-size: 2em;
-    text-align: center;
-    padding: 15px 9px 5px 9px;
+.disable {
+  pointer-events: none;
+  opacity: 0.3;
 }
 
-.reviewsContainer{
-    height: 80%;
-    overflow-y: scroll;
+.page-number {
+  font-size: 1.5rem;
+  color: #ecf0f1;
 }
-.reviewsContainer::-webkit-scrollbar{
-    display: none;
+
+/* List of reviews with a scrollable container */
+.reviews-list {
+  max-height: 120vh;
+  overflow-y: auto;
+}
+
+.reviews-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual review card styling */
+.review-card {
+  background-color: #2c2c2c; /* Slightly lighter than the background */
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.review-author {
+  font-weight: bold;
+  color: #ff4500;
+  margin-bottom: 0.5rem;
+}
+
+.review-content {
+  color: #ecf0f1;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  max-height: 150px; /* Limit the height of the review content */
+  overflow-y: hidden; /* Hide overflow by default */
+  text-overflow: ellipsis;
+  position: relative;
+  transition: max-height 0.3s ease-in-out;
+}
+
+/* Show scroll bar only on hover */
+.review-card:hover .review-content {
+  overflow-y: auto; /* Make it scrollable when hovered */
+  max-height: 150px; /* Keeps the height fixed, but allows scrolling */
+}
+
+.review-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.review-content::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 10px;
+}
+
+/* No reviews message styling */
+.no-reviews {
+  text-align: center;
+  font-family: 'Sigmar', cursive;
+  font-size: 1.8rem;
+  color: #ff4500;
 }
 </style>
+
