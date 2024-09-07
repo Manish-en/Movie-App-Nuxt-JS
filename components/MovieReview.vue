@@ -80,6 +80,8 @@
 
 }
 .reviewcard{
+    max-height: 288px;
+    overflow: hidden;
     margin: 0 auto;
     padding: 1rem;
     height: 30rem;
