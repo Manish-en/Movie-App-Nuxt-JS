@@ -2,29 +2,25 @@
     
     <div class="all">
         <div class="searchBar">
-            <div style="width: 92%">
-                <div class="innerSearchBar">
-                    <input 
+            <div class="innerSearchBar">
+                <input 
                     type="text" 
                     v-model="keyword"
                     class="searchInput" 
                     placeholder="Enter movie name" 
-                    @keyup=searchController()
-                    />
-                    <button class="myBtn" @click="searchController()"> Search</button>
-                </div>
+                    @keyup="searchController()"
+                />
+                <button class="myBtn" @click="searchController()">Search</button>
             </div>
-            <div style="padding-top:1.5vw" >
+            <div class="pagination">
                 <i 
                     class="material-icons navbtn" 
-                    style="padding:5px 0px" 
                     @click="decrement" 
                     :class="page == 1 ? 'disable' : ''"
                 >keyboard_double_arrow_left</i>
-                <span class="pg" style="font-size: 1.7em;"> {{ page }} </span>
+                <span class="pg">{{ page }}</span>
                 <i 
                     class="material-icons navbtn" 
-                    style="padding:5px 0px" 
                     @click="increment"
                     :class="totalItems < 20 ? 'disable' : ''"
                 >keyboard_double_arrow_right</i>
@@ -32,10 +28,11 @@
         </div>
 
         <div class="movieContainer">
-            <div v-for="movie in movies" :key="movies.id" class="moviecard">
+            <div v-for="movie in movies" :key="movie.id" class="movieCard">
                 <MovieCard :movie="movie"/>
             </div>
         </div>
+
        
     </div>
 </template>
@@ -184,16 +181,79 @@ if(receivedKeyword.value !== null){
 <style scoped>
 
 .all {
-    background-color: black;
+    background-color: linear-gradient(180deg, #000, #232323);
 }
 .searchBar {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     position: sticky;
     top: 0;
-    padding-bottom: 2vw;
+    padding: 1.5rem 0;
     background: linear-gradient(180deg, #000, #232323);
     z-index: 1000;
 }
+
+.innerSearchBar {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    max-width: 800px;
+    margin-bottom: 1rem;
+}
+
+.searchInput {
+    flex: 1;
+    border: none;
+    border-radius: 8px 0 0 8px;
+    padding: 10px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.myBtn {
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.myBtn:hover {
+    background-color: #e03d00;
+    transform: scale(1.05);
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.navbtn {
+    color: aliceblue;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.navbtn:hover {
+    color: aqua;
+    transform: scale(1.2);
+}
+
+.pg {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.disable {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
 
 .movieContainer{
     display: flex;
@@ -212,59 +272,6 @@ if(receivedKeyword.value !== null){
     transform: scale(1.1);
 }
 
-.myBtn {
-    font-size: 1.2rem;
-    background-color: #ff4500;
-    color: white;
-    cursor: grab;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    padding: 6px 12px 7px 18px;
-}
-.myBtn:hover{
-    transform: scale(1.1);
-}
 
-.innerSearchBar{
-    margin-left: 6vw;
-    margin-top: 2vw;
-}
-.searchInput {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    padding: 9px 15px;
-}
-.navbtn{
-    color: aliceblue;
-}
-.navbtn:hover{
-    color: aqua;
-    cursor: pointer;
-    transform: scale(1.5);
-}
-.pg{
-    color: white;
-    font-size: 2em;
-    text-align: center;
-    padding: 15px 9px 5px 9px;
-}
-.pg2{
-    color: #ff4500;
-    font-family: 'Sigmar', cursive;
-    font-size: 2em;
-    text-align:left;
-    border: 2px solid #ff4500;
-    width: fit-content;
-    padding: 10px;
-    margin-top: 1em;
-    margin-left: 5em;
-
-}
-
-.disable{
-    pointer-events: none;
-    display: none;
-    opacity: 0.3;
-}
 
 </style>

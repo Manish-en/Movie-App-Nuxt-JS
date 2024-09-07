@@ -1,141 +1,149 @@
 <template>
-  <NuxtLink :to="`/movies/${movie.id}`"  >
-     <div class="flipCard">
-       <div class="flipCard-inner">
-         <div class="flipCard-front">
-            <div class="content_img">
-              <span class="xyz">{{ movie.vote_average }}</span>
-              <img :src=movie.poster_path class="image" />
-            </div>
-            <div class="baseOfCard">
-              <p class="title">{{ movie.original_title }}</p>
-              <p>Released: {{ movie.release_date }}</p>
-            </div> 
-         </div>
-         
-         <div class="flipCard-back">
-           <div class="backCard">
-             <p class="details">Info:</p>
-             <div class="overview">
-               {{ movie.overview }}
-             </div>
-           </div>
-         </div>
+  <NuxtLink :to="`/movies/${movie.id}`">
+    <div class="flipCard">
+      <div class="flipCard-inner">
+        <div class="flipCard-front">
+          <div class="content_img">
+            <span class="rating">{{ roundedValue }}</span>
+            <img :src="movie.poster_path" class="image" />
+          </div>
+        </div>
 
-       </div>
-       
-     </div>
- </NuxtLink>
+        <div class="flipCard-back">
+          <div class="backCard">
+            <p class="details">Info:</p>
+            <div class="overview">
+              {{ movie.overview }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="baseOfCard">
+        <p class="title">{{ movie.original_title }}</p>
+        <p class="releaseDate">Released: {{ movie.release_date }}</p>
+      </div>
+    </div>
+  </NuxtLink>
 </template>
 
 <script setup>
- 
- let { movie } = defineProps(['movie']);
- 
+let { movie } = defineProps(['movie']);
+const roundedValue = parseFloat(movie.vote_average.toFixed(1));
 </script>
 
 <style scoped>
-.flipCard{
-   height: 35rem;
-   width: 20rem;
-   display:inline-flex;
-   text-align: center;
-   border-radius: 5%;
-   background-color: #1c1919;
- }
- .image{
-   text-align: center;
-   height: 100%;
-   width: 100%;
- }
 
- .content_img{
-    width: 100%;
-    height: 85%;
-    position: relative;
- }
- .baseOfCard{
-  margin-top: 0.5rem;
-  height: 10%;
- }
+.flipCard {
+  height: 35rem;
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #1c1919;
+  border-radius: 8px;
+  perspective: 1000px;
+  overflow: hidden;
+}
 
- .xyz{
-   position: relative;
-   margin-bottom: -35px;
-   float: left;
-   background-color: #ff4500;
-   padding: 3px 6px 10px 3px;
-   border-bottom-right-radius: 8px;
- }
+.flipCard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
 
- .content_img:hover {
-   cursor: pointer;
- }
- .content_img:hover div {
-     visibility: visible;
-     opacity: .9;
- }
+.flipCard:hover .flipCard-inner {
+  transform: rotateY(180deg);
+}
 
-   .title{
-     font-size: 1.2em;
-     font-weight: bold;
-     color: aqua;
-     overflow:hidden;
-     height: 50%;
-   }
-   p{
-    margin-top: 2px;
-    font-size: 1rem;
-    color: #ff4500;
-   }
+.flipCard-front,
+.flipCard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
 
-   .flipCard-inner{
-     width: 100%;
-     height: 100%;
-     position: relative;
-     text-align: center;
-     transition: transform 0.6s;
-     transform-style: preserve-3d ;
-   }
+.flipCard-front {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Adjusts the content to fill the space */
+}
 
-   .flipCard:hover .flipCard-inner{
-     transform: rotateY(180deg);
-   }
+.flipCard-back {
+  transform: rotateY(180deg);
+}
 
-   .flipCard-front{
-     width: 100%;
-     height: 100%;
-     position: absolute;
-     -webkit-backface-visibility: hidden;
-     backface-visibility: hidden;
-   }
+.content_img {
+  position: relative;
+  width: 100%;
+  flex-grow: 1; /* Allows image container to grow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-   .flipCard-back{
-     -webkit-backface-visibility: hidden;
-     backface-visibility: hidden;
-     transform: rotateY(180deg);
-     display: block;
-   }
-   
-   
-   
-   .details{
-       color: #ff4500;
-       font-family: 'Sigmar', cursive;
-       font-size: 2em;
-       width: fit-content;
-       margin: 0 auto;
-     }
-     .overview{
-       margin-top: 1rem;
-       height:27rem;
-       color: white;
-       overflow:auto;
-       text-overflow: ellipsis; 
-       text-align: justify;
-       padding: 1rem;
-     }
-     .overview::-webkit-scrollbar{
-         display: none;
-     }
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rating {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff4500;
+  padding: 3px 6px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+}
+
+.baseOfCard {
+  background-color: #1c1919;
+  padding: 1rem;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #333;
+  box-sizing: border-box; /* Ensures padding is included in height calculation */
+}
+
+.title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: aqua;
+  margin: 0;
+}
+
+.releaseDate {
+  font-size: 1rem;
+  color: #ff4500;
+  margin: 0;
+}
+
+.details {
+  color: #ff4500;
+  font-family: 'Sigmar', cursive;
+  font-size: 2em;
+  text-align: center;
+  margin: 0;
+}
+
+.overview {
+  margin-top: 1rem;
+  height: calc(100% - 3rem); /* Adjusts height to account for other content */
+  color: white;
+  overflow: auto;
+  text-align: justify;
+  padding: 1rem;
+  text-overflow: ellipsis;
+}
+
+.overview::-webkit-scrollbar {
+  display: none;
+}
+
 </style>
