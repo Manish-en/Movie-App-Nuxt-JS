@@ -9,7 +9,7 @@
                     placeholder="Enter movie name" 
                     @keyup="searchController()"
                 />
-                <button class="myBtn" @click="searchController()">Search</button>
+                <!-- <button class="myBtn" @click="searchController()">Search</button> -->
             </div>
             <div class="pagination">
                 <i 
@@ -198,7 +198,7 @@ if(receivedKeyword.value !== null){
 .searchInput {
     flex: 1;
     border: none;
-    border-radius: 8px 0 0 8px;
+    border-radius: 8px;
     padding: 10px;
     font-size: 1rem;
     outline: none;
