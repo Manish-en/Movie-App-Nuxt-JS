@@ -112,7 +112,7 @@
 
 /* List of reviews with a scrollable container */
 .reviews-list {
-  max-height: 120vh;
+  max-height: 48.5rem;
   overflow-y: auto;
 }
 

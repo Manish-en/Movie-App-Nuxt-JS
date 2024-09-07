@@ -1,5 +1,4 @@
 <template>
-    
     <div class="all">
         <div class="searchBar">
             <div class="innerSearchBar">
@@ -26,19 +25,13 @@
                 >keyboard_double_arrow_right</i>
             </div>
         </div>
-
         <div class="movieContainer">
             <div v-for="movie in movies" :key="movie.id" class="movieCard">
                 <MovieCard :movie="movie"/>
             </div>
         </div>
-
-       
     </div>
 </template>
-
-
-
 <script setup>
 import store from "store2"
 

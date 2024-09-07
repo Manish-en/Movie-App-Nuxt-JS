@@ -128,7 +128,7 @@ h1 {
     padding: 2rem;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments
 @media (max-width: 768px) {
     .heading {
         height: 40vh;
@@ -151,5 +151,5 @@ h1 {
     .headclass h1 {
         font-size: 1.2rem;
     }
-}
+} */
 </style>
